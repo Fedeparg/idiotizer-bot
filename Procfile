@@ -1,1 +1,1 @@
-worker: python idiotizer.py
+web: python3 idiotizer.py

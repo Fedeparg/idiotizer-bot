@@ -71,7 +71,7 @@ async def idiotizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 def main() -> None:
     """Start the bot."""
     # Create the Application and pass it your bot's token.
-    application = ApplicationBuilder().token(os.environ.get('bot_token')).build()
+    application = ApplicationBuilder().token(os.environ['bot_token']).build()
 
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler("start", start))
@@ -82,7 +82,17 @@ def main() -> None:
     application.add_handler(InlineQueryHandler(inline_idiotizer))
 
     # Run the bot until the user presses Ctrl-C
-    application.run_polling()
+
+    TOKEN = os.environ['bot_token']
+    PORT = int(os.environ.get('PORT', '8443'))
+    # add handlers
+    application.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        url_path=TOKEN,
+        webhook_url="https://idiotizer-bot.herokuapp.com/" + TOKEN
+    )
+    #application.run_polling()
 
 
 if __name__ == "__main__":
