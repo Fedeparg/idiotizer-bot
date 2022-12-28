@@ -1,3 +1,4 @@
 /idiotizer_env
 .DS_Store
 .env
+fly.toml

@@ -84,13 +84,13 @@ def main() -> None:
     # Run the bot until the user presses Ctrl-C
 
     TOKEN = os.environ['bot_token']
-    PORT = int(os.environ.get('PORT', '8443'))
+    PORT = int(os.environ.get('PORT', '8080'))
     # add handlers
     application.run_webhook(
         listen="0.0.0.0",
         port=PORT,
         url_path=TOKEN,
-        webhook_url="https://idiotizer-bot.herokuapp.com/" + TOKEN
+        webhook_url="https://idiotizer.fly.dev/" + TOKEN
     )
     #application.run_polling()
 
