@@ -15,16 +15,14 @@ from random import random
 
 import argparse
 
-from telegram import __version__ as TG_VER
-
 import re
 
 import os
 
 from uuid import uuid4
 
-from telegram import ForceReply, Update, InlineQueryResultArticle, InputTextMessageContent
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters, InlineQueryHandler
+from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, InlineQueryHandler
 
 # Enable logging
 logging.basicConfig(
