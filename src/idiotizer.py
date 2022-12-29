@@ -48,23 +48,25 @@ async def inline_idiotizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     if query == "":
         return
 
+    idiotizer_i = idiotizer_i_char(query)
+    idiotizer_case = idiotizer_casing(query)
     results = [
         InlineQueryResultArticle(
             id=str(uuid4()),
-            title=idiotizer_fun(query),
-            input_message_content=InputTextMessageContent(idiotizer_fun(query)),
+            title=idiotizer_i,
+            input_message_content=InputTextMessageContent(idiotizer_i),
         ),
         InlineQueryResultArticle(
             id=str(uuid4()),
-            title=idiotizer_casing(query),
-            input_message_content=InputTextMessageContent(idiotizer_casing(query)),
+            title=idiotizer_case,
+            input_message_content=InputTextMessageContent(idiotizer_case),
         ),
     ]
 
     await update.inline_query.answer(results, cache_time=0)
 
 
-def idiotizer_fun(text) -> None:
+def idiotizer_i_char(text) -> None:
     idiot_text = re.sub('[aeouáéóúàèòù]', 'i', text)
     idiot_text = re.sub('[AEOUÁÉÓÚÀÈÒÙ]', 'I', idiot_text)
     return idiot_text
@@ -74,11 +76,14 @@ def idiotizer_casing(text) -> None:
     idiot_text = ''.join(c.lower() if random() > 0.5 else c for c in idiot_text)
     return idiot_text
 
-async def idiotizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Echo the user message idiotized."""
-    idiot_text = re.sub('[aeouáéóúàèòù]', 'i', update.message.text)
-    idiot_text = re.sub('[AEOUÁÉÓÚÀÈÒÙ]', 'I', idiot_text)
-    await update.message.reply_text(idiot_text)
+
+# Not used for now because reasons
+
+# async def idiotizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+#     """Echo the user message idiotized."""
+#     idiot_text = re.sub('[aeouáéóúàèòù]', 'i', update.message.text)
+#     idiot_text = re.sub('[AEOUÁÉÓÚÀÈÒÙ]', 'I', idiot_text)
+#     await update.message.reply_text(idiot_text)
 
 
 def main(args) -> None:
