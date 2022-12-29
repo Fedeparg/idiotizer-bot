@@ -11,6 +11,10 @@ bot.
 
 import logging
 
+from random import random
+
+import argparse
+
 from telegram import __version__ as TG_VER
 
 import re
@@ -50,14 +54,24 @@ async def inline_idiotizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             title=idiotizer_fun(query),
             input_message_content=InputTextMessageContent(idiotizer_fun(query)),
         ),
+        InlineQueryResultArticle(
+            id=str(uuid4()),
+            title=idiotizer_casing(query),
+            input_message_content=InputTextMessageContent(idiotizer_casing(query)),
+        ),
     ]
 
-    await update.inline_query.answer(results)
+    await update.inline_query.answer(results, cache_time=0)
 
 
 def idiotizer_fun(text) -> None:
     idiot_text = re.sub('[aeouáéóúàèòù]', 'i', text)
     idiot_text = re.sub('[AEOUÁÉÓÚÀÈÒÙ]', 'I', idiot_text)
+    return idiot_text
+
+def idiotizer_casing(text) -> None:
+    idiot_text = ''.join(c.upper() if random() > 0.5 else c for c in text)
+    idiot_text = ''.join(c.lower() if random() > 0.5 else c for c in idiot_text)
     return idiot_text
 
 async def idiotizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -67,8 +81,8 @@ async def idiotizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(idiot_text)
 
 
-def main() -> None:
-    """Start the bot."""
+def main(args) -> None:
+    #Start the bot
     # Create the Application and pass it your bot's token.
     application = ApplicationBuilder().token(os.environ['bot_token']).build()
 
@@ -82,17 +96,21 @@ def main() -> None:
 
     # Run the bot until the user presses Ctrl-C
 
-    TOKEN = os.environ['bot_token']
-    PORT = int(os.environ.get('PORT', '8080'))
     # add handlers
-    application.run_webhook(
-        listen="0.0.0.0",
-        port=PORT,
-        url_path=TOKEN,
-        webhook_url="https://idiotizer.fly.dev/" + TOKEN
-    )
-    #application.run_polling()
-
+    if args.dev.lower()[0] == 'f':
+        TOKEN = os.environ['bot_token']
+        PORT = int(os.environ.get('PORT', '8080'))
+        application.run_webhook(
+            listen="0.0.0.0",
+            port=PORT,
+            url_path=TOKEN,
+            webhook_url="https://idiotizer.fly.dev/" + TOKEN
+        )
+    else:
+        application.run_polling()
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-dev", default = 'false', help="Development or nah")
+    args = parser.parse_args()
+    main(args)
