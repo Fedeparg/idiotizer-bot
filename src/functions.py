@@ -2,8 +2,12 @@ import re
 from random import random
 
 def idiotizer_i_char(text) -> str:
-    idiot_text = re.sub('[aeouáéóúàèòù]', 'i', text)
-    idiot_text = re.sub('[AEOUÁÉÓÚÀÈÒÙ]', 'I', idiot_text)
+    idiot_text = re.sub('[aeou]', 'i', text)
+    idiot_text = re.sub('[áéóú]', 'í', idiot_text)
+    idiot_text = re.sub('[àèòù]', 'ì', idiot_text)
+    idiot_text = re.sub('[AEOU]', 'I', idiot_text)
+    idiot_text = re.sub('[ÁÉÓÚ]', 'Í', idiot_text)
+    idiot_text = re.sub('[ÀÈÒÙ]', 'Ì', idiot_text)
     return idiot_text
 
 
