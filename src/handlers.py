@@ -15,7 +15,7 @@ class Handler:
         logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s: %(message)s')
 
-    def __user_info_log(self, user: User) -> str:
+    def __user_info_log(self, user) -> str:
         return f"User {user.first_name} (@{user.username}-{user.id})"
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
