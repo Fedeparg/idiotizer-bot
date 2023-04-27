@@ -40,6 +40,7 @@ def main(args) -> None:
 
     # Run the bot until the user presses Ctrl-C
     if args.dev.lower()[0] == 'f':
+        logger.info("Running on webhook")
         TOKEN = os.environ['bot_token']
         PORT = int(os.environ.get('PORT', '8080'))
         application.run_webhook(
@@ -49,6 +50,7 @@ def main(args) -> None:
             webhook_url="https://idiotizer.fly.dev/" + TOKEN
         )
     else:
+        logger.info("Running on polling")
         application.run_polling()
 
 
